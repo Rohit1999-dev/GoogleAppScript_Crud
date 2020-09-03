@@ -17,10 +17,10 @@ function readData() {
   }
 }
 
-function addData() {
-  var sheet = SpreadsheetApp.openById(SHEET_ID);
-  sheet.appendRow([4, 'Vishal', 'pandey', 'vishal19@navgurukul.org', '123w']);
-}
+//function addData() {
+//  var sheet = SpreadsheetApp.openById(SHEET_ID);
+//  sheet.appendRow([4, 'Vishal', 'pandey', 'vishal19@navgurukul.org', '123w']);
+//}
 
 // Get data
 function getData() {
@@ -62,13 +62,6 @@ function getUserDetails(e){
 }
 
 
-function doPost(e){
-  var requestType = (e.parameter.TypeOfRequest);
-  if (requestType == "appendUser") {
-    return appendUser(e);
-  }
-}
-
 //append User
 function appendUser(e) {  
   var sheet = SpreadsheetApp.openById(SHEET_ID);
@@ -77,7 +70,7 @@ function appendUser(e) {
 //  Logger.log(e.postData);
   var params = JSON.stringify(JSON.parse(e.postData.contents));
   var parseData = JSON.parse(e.postData.contents);
-//  sheet.appendRow([parseData.Token, parseData.Name, parseData.Number]);
+//  sheet.appendRow([parseData.Id, parseData.Name, parseData.Number]);
     
     for (var i in data){
       var row = data[i];
@@ -89,7 +82,7 @@ function appendUser(e) {
     }
     if (!duplicate){
         sheet.appendRow([parseData.Id, parseData.FirstName, parseData.LastName, parseData.Email, parseData.Password]);
-        return ContentService.createTextOutput(params).setMimeType(ContentService.MimeType.JSON);
+        return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.JSON);
       }
         
   }else{
@@ -103,6 +96,9 @@ function doPost(e){
   var requestType = (e.parameter.TypeOfRequest);
   if (requestType == "updateUserInformation") {
     return updateUserInformation(e);
+  }
+  if (requestType == "appendUser") {
+    return appendUser(e);
   }
 }
 
