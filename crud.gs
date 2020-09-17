@@ -142,3 +142,39 @@ function deleteAccount(e){
     var result = JSON.stringify(response);
     return ContentService.createTextOutput(result).setMimeType(ContentService.MimeType.JSON);
   }
+
+function doGet(e){
+  var ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1tnrJQHhuPTdv7iI03_vJtsveVXd0R8ZVeddoGhUyl-I/edit#gid=1461464255");
+  var sheet = ss.getSheetByName("Sheet1");
+  return getUsers(sheet);
+  
+}
+
+function getUsers(sheet){
+  var jo = {};
+  var dataArray = [];
+
+// collecting data from 2nd Row , 1st column to last row and last column
+  var rows = sheet.getRange(2,1,sheet.getLastRow()-1, sheet.getLastColumn()).getValues();
+  
+  for(var i = 0, l= rows.length; i<l ; i++){
+    var dataRow = rows[i];
+    var record = {};
+    record['FirstName'] = dataRow[1];
+    record['LastName'] = dataRow[2];
+    record['Email'] = dataRow[3];
+    record['Password'] = dataRow[4];
+    
+    dataArray.push(record);
+    
+  }  
+  
+  jo.user = dataArray;
+  
+  var result = JSON.stringify(jo);
+  
+//  return ContentService.createTextOutput(result).setMimeType(ContentService.MimeType.JSON);
+  console.log(result);
+  
+}  
+  
